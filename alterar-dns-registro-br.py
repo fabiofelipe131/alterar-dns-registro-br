@@ -22,8 +22,8 @@ class UntitledTestCase(unittest.TestCase):
         driver.get("https://registro.br/login/?session=logout")
 
         #Login
-        id = ''
-        senha = ''
+        id = ""
+        senha = ""
 
         sleep(5)
         driver.find_element_by_name("login.user").click()
@@ -40,8 +40,8 @@ class UntitledTestCase(unittest.TestCase):
         
 
         #Configurações        
-        dns1 = "ns1.vistahost.com.br"
-        dns2 = "ns2.vistahost.com.br"        
+        dns1 = ""
+        dns2 = ""        
 
         menu = ['dominio']
         dominios = {}
