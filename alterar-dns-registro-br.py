@@ -22,8 +22,8 @@ class UntitledTestCase(unittest.TestCase):
         driver.get("https://registro.br/login/?session=logout")
 
         #Login
-        id = ""
-        senha = ""
+        id = input("Informe a ID do Registro BR: ")
+        senha = input("Informe a SENHA do Registro BR: ")
 
         sleep(5)
         driver.find_element_by_name("login.user").click()
@@ -33,15 +33,17 @@ class UntitledTestCase(unittest.TestCase):
         driver.find_element_by_id("app").click()
         driver.find_element_by_name("login.password").click()
         driver.find_element_by_name("login.password").clear()
-        driver.find_element_by_name("login.password").send_keys(senha)        
+        driver.find_element_by_name("login.password").send_keys(senha)   
+
+        print("Faça o CAPTCHA do Google na aba do navegador que irá abrir !!")     
         
         #Pagina inicial
-        input('Aperte Enter Quando Terminar de Acessar')
+        input('Aperte Enter Quando Terminar de Acessar !!')
         
 
         #Configurações        
-        dns1 = ""
-        dns2 = ""        
+        dns1 = input("Informe o primeiro DNS: ")
+        dns2 = input("Informe o segundo DNS: ")       
 
         menu = ['dominio']
         dominios = {}
