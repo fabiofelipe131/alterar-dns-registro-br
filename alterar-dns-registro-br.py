@@ -21,6 +21,11 @@ class UntitledTestCase(unittest.TestCase):
         driver = self.driver
         driver.get("https://registro.br/login/?session=logout")
 
+        with open('log_script.csv', 'w') as arquivo_csv:
+            colunas = ['status','dominio']
+            escrever = csv.DictWriter(arquivo_csv, fieldnames=colunas, delimiter=',', lineterminator='\n')
+            escrever.writeheader()
+
         #Login
         id = input("Informe a ID do Registro BR: ")
         senha = input("Informe a SENHA do Registro BR: ")
@@ -38,12 +43,13 @@ class UntitledTestCase(unittest.TestCase):
         print("Faça o CAPTCHA do Google na aba do navegador que irá abrir !!")     
         
         #Pagina inicial
-        input('Aperte Enter Quando Terminar de Acessar !!')
-        
+        input('Aperte Enter Quando Terminar de Acessar !!')        
 
         #Configurações        
         dns1 = input("Informe o primeiro DNS: ")
-        dns2 = input("Informe o segundo DNS: ")       
+        dns2 = input("Informe o segundo DNS: ")   
+
+        print("O script está iniciando ...")    
 
         menu = ['dominio']
         dominios = {}
@@ -53,7 +59,11 @@ class UntitledTestCase(unittest.TestCase):
                 if 'dominio' in line[0]: pass
                 else: dominios[line[0]] = dict(zip(menu,line))
 
-        for dominio in dominios.values():            
+        for dominio in dominios.values():
+            def log_script(text):
+                with open('log_script.csv', 'a') as arquivo_csv:
+                    escrever = csv.writer(arquivo_csv, delimiter=',', lineterminator='\n')
+                    escrever.writerow([text,dominio])           
             try:          
                 try:
                     driver.get("https://registro.br/painel/")
@@ -65,7 +75,8 @@ class UntitledTestCase(unittest.TestCase):
                     sleep(3)
                     driver.find_element_by_link_text(dominio.upper()).click()                
                 except:           
-                    print("Domínio: ",dominio," não encontrado!")
+                    print("DOMÍNIO: ",dominio," NÃO ENCONTRADO!")
+                    log_script(f"DOMÍNIO NÃO ENCONTRADO!")
                     continue
                 
                 #Clicar em "Alterar Servidores DNS"        
@@ -75,6 +86,7 @@ class UntitledTestCase(unittest.TestCase):
 
                 except:
                     print("Não possui o botão 'Alterar Servidores DNS'")
+                    log_script(f"Não possui o botão 'Alterar Servidores DNS'")
                     continue  
                 
                 #Informar o DNS
@@ -91,9 +103,11 @@ class UntitledTestCase(unittest.TestCase):
                 driver.find_element_by_name("dns.host1").send_keys(dns2)
                 driver.find_element_by_xpath("//button[@type='button']").click()
                 sleep(5)
-                print("DNS DO DOMÍNIO: ",dominio," ALTERADO COM SUCESSO")  
+                print("DNS DO DOMÍNIO: ",dominio," ALTERADO COM SUCESSO")
+                log_script(f"DNS DO DOMÍNIO ALTERADO COM SUCESSO")  
             except:
                 print("ERRO AO ALTERAR DNS DO DOMÍNIO: ",dominio)
+                log_script(f"ERRO AO ALTERAR DNS DO DOMÍNIO") 
                 continue 
             
     def is_element_present(self, how, what):
